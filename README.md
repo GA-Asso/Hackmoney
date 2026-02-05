@@ -58,3 +58,21 @@
 *   **Slogan Principal:** *"Tu identidad paga."*
 *   **Campaign Idea:** "¿Por qué tu banco se queda con tus puntos? En Cashback ID, tus compras trabajan para ti."
 *   **Publicidad:** Visuales de una tarjeta física transparente donde se ven "engranajes" digitales (los Hooks) moviéndose cada vez que se hace un pago.
+
+---
+
+## 🛠️ Tech Integration (Hackathon Tracks)
+
+| Protocolo  | Rol Crítico                                                                                                   | Track Target                    |
+| :--------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------ |
+| Uniswap v4 | Hooks de Gestión: Automatizan el swap de la recompensa del comercio y su colocación en pools de yield.         | *Agentic Finance / Privacy DeFi*  |
+| Sui        | Riel de Pago: Motor de alta frecuencia para el procesamiento de transacciones y zkLogin para onboarding sin fricción. | *Best Overall Sui Project*        |
+| ENS        | Centro de Datos: Almacena preferencias de usuario, niveles de riesgo y sirve como el ID público de la tarjeta. | *Most Creative Use of ENS*      |
+
+---
+
+## 📈 Criterios de Éxito - Demo Day
+
+1.  **Velocidad:** Mostrar una compra en Sui que se refleja en el Hook de Uniswap en menos de 2 segundos.
+2.  **Simplicidad:** Un usuario nuevo "creando su cuenta" en menos de 10 segundos con su correo.
+3.  **Impacto:** Un dashboard que proyecte cuánto dinero extra tendría el usuario en 5 años gracias al interés compuesto del cashback.
