@@ -2,23 +2,19 @@
 pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
-import "../contracts/CashbackHook.sol";
-import "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
-import "@uniswap/v4-core/src/interfaces/IHook.sol";
+import {CashbackHook} from "../src/CashbackHook.sol";
+import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
 
 contract CashbackHookTest is Test {
-    CashbackHook hook;
-    IPoolManager poolManager;
+    CashbackHook public hook;
 
     function setUp() public {
-        // TODO: Mock or deploy a PoolManager for testing
-        poolManager = IPoolManager(address(0x1)); 
-        hook = new CashbackHook(poolManager);
+        // Mock PoolManager address for testing
+        address mockPoolManager = address(0x1234);
+        hook = new CashbackHook(IPoolManager(mockPoolManager));
     }
 
-    function testAfterSwap() public {
-        // TODO: Implement a proper test for the afterSwap function
-        // This will require mocking the poolManager and the swap parameters
-        assertTrue(true);
+    function test_PoolManagerIsSet() public view {
+        assertEq(address(hook.poolManager()), address(0x1234));
     }
 }
