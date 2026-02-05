@@ -5,8 +5,8 @@ import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 
 export default function DemoPage() {
   const [ensName, setEnsName] = useState("vitalik.eth");
-  const [resolved, setResolved] = useState<string>("");
-  const [pkgId, setPkgId] = useState<string>("");
+  const [resolved, setResolved] = useState<string>("0xbdabfb7fb7822e83b2d8ba86d211347812bb3a6d454f64828ea3c17453f4e9aa");
+  const [pkgId, setPkgId] = useState<string>("0xbdabfb7fb7822e83b2d8ba86d211347812bb3a6d454f64828ea3c17453f4e9aa");
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -40,19 +40,19 @@ export default function DemoPage() {
   }
 
   return (
-    <div style={{ padding: 24, fontFamily: "system-ui" }}>
+    <div style={{ padding: 24, fontFamily: "system-ui", backgroundColor: "#ffffff", color: "#000000", minHeight: "100vh" }}>
       <h1>Hackmoney Demo: ENS + Sui Events</h1>
 
       <section style={{ marginTop: 16 }}>
         <h2>Resolver ENS (Sepolia)</h2>
-        <input value={ensName} onChange={(e) => setEnsName(e.target.value)} placeholder="nombre ENS" />
+        <input style={{ border: "1px solid #ccc", padding: 4, color: "#000000" }} value={ensName} onChange={(e) => setEnsName(e.target.value)} placeholder="nombre ENS" />
         <button onClick={resolveEns} disabled={loading} style={{ marginLeft: 8 }}>Resolver</button>
         <div style={{ marginTop: 8 }}>Dirección: {resolved || "-"}</div>
       </section>
 
       <section style={{ marginTop: 24 }}>
         <h2>Eventos Sui (PaymentProcessed / CashbackReceived)</h2>
-        <input value={pkgId} onChange={(e) => setPkgId(e.target.value)} placeholder="packageId" />
+        <input style={{ border: "1px solid #ccc", padding: 4, color: "#000000" }} value={pkgId} onChange={(e) => setPkgId(e.target.value)} placeholder="packageId" />
         <button onClick={fetchSuiEvents} disabled={loading} style={{ marginLeft: 8 }}>Consultar</button>
         <div style={{ marginTop: 8 }}>
           {events.length === 0 ? (
