@@ -1,28 +1,37 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
-import {CashbackHook} from "../src/CashbackHook.sol";
-import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import "src/CashbackHook.sol";
+import { IPoolManager } from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { MockERC20 } from "./mocks/MockERC20.sol";
 
 contract CashbackHookTest is Test {
-    CashbackHook public hook;
+    CashbackHook hook;
+    IPoolManager poolManager;
+    MockERC20 public mockUsdc;
+    address public constant USDC_ADDRESS = 0xA0b86991c6218b36c1d19D4a2e9EB0cE3606eB48; // Replace with a mock USDC
+
+    // Example: Replace with a valid ERC20, USDC or Mock
 
     function setUp() public {
-        address mockPoolManager = address(0x1234);
-        hook = new CashbackHook(IPoolManager(mockPoolManager));
+       // Replace by MockERC20
+       mockUsdc = new MockERC20("USDC", "USDC", 18, 1000000 ether);
+        //TODO: Mock or deploy a PoolManager for testing
+        poolManager = IPoolManager(address(0x1));
+        hook = new CashbackHook(poolManager, mockUsdc); // Corrected: passing the USDC mock
     }
 
-    function test_PoolManagerIsSet() public view {
-        assertEq(address(hook.POOL_MANAGER()), address(0x1234));
+    function testInitialState() public {
+        // Test that the poolManager is set correctly
+        assertEq(address(hook.poolManager()), address(poolManager));
+        //Test that the usdc address is set correctly.
+        assertEq(address(hook.usdc()), address(mockUsdc));
+
     }
 
-    function test_ENSRegistryIsSet() public view {
-        // Check ENS Registry is set to Sepolia address
-        assertEq(address(hook.ENS_REGISTRY()), 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
-    }
-    
-    function test_ReverseRegistrarIsSet() public view {
-        assertEq(address(hook.REVERSE_REGISTRAR()), 0xA0a1AbcDAe1a2a4A2EF8e9113Ff0e02DD81DC0C6);
-    }
+    //Test the afterSwap function
+    function testAfterSwap() public {
+        //TODO: Implement a proper test for the afterSwap function\n        // This will require mocking the poolManager and the swap parameters\n        // and assert the results\n    }
 }
