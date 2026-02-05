@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
-import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
-import { Transaction } from "@mysten/sui/transactions";
-import { fromBase64 } from "@mysten/sui/utils";
+import { SuiClient } from "@mysten/sui.js/client";
+import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { fromB64 } from "@mysten/sui.js/utils";
 
 export async function POST(req: Request) {
   try {
@@ -12,22 +12,22 @@ export async function POST(req: Request) {
     if (!privateKey) throw new Error("SUI_PRIVATE_KEY missing");
     
     let keypair;
-    const bytes = fromBase64(privateKey);
+    const bytes = fromB64(privateKey);
     if (bytes.length === 33 && bytes[0] === 0) {
          keypair = Ed25519Keypair.fromSecretKey(bytes.slice(1));
     } else {
          keypair = Ed25519Keypair.fromSecretKey(bytes);
     }
 
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+    const client = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
     
-    const tx = new Transaction();
+    const tx = new TransactionBlock();
     tx.setGasBudget(100000000);
 
     const [coin] = tx.splitCoins(tx.gas, [tx.pure.u64(amount)]);
     
     tx.moveCall({
-      target: \`\${packageId}::checkout::process_payment\`,
+      target: `${packageId}::checkout::process_payment`,
       arguments: [
         tx.object(profileId),
         coin,
@@ -35,9 +35,9 @@ export async function POST(req: Request) {
       ],
     });
 
-    const result = await client.signAndExecuteTransaction({
+    const result = await client.signAndExecuteTransactionBlock({
       signer: keypair,
-      transaction: tx,
+      transactionBlock: tx,
       options: {
         showEffects: true,
         showEvents: true,
@@ -48,8 +48,9 @@ export async function POST(req: Request) {
         digest: result.digest,
         events: result.events 
     });
-  } catch (error: any) {
-    console.error("Error processing payment:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Error processing payment:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

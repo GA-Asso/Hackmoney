@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
-import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
-import { Transaction } from "@mysten/sui/transactions";
-import { fromBase64 } from "@mysten/sui/utils";
+import { SuiClient } from "@mysten/sui.js/client";
+import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { fromB64 } from "@mysten/sui.js/utils";
 
 export async function POST(req: Request) {
   try {
@@ -13,9 +13,7 @@ export async function POST(req: Request) {
     
     let keypair;
     try {
-        // Strip the first byte if it is the flag byte for Ed25519 (0x00)
-        // Sui keystore format is base64(flag + secret_key)
-        const bytes = fromBase64(privateKey);
+        const bytes = fromB64(privateKey);
         if (bytes.length === 33 && bytes[0] === 0) {
              keypair = Ed25519Keypair.fromSecretKey(bytes.slice(1));
         } else {
@@ -26,28 +24,27 @@ export async function POST(req: Request) {
         throw new Error("Invalid Private Key format");
     }
 
-    const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+    const client = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
     
-    const tx = new Transaction();
+    const tx = new TransactionBlock();
     tx.setGasBudget(100000000); 
 
     tx.moveCall({
-      target: \`\${packageId}::profile::create_and_transfer_to_sender\`,
-      arguments: [
-        tx.pure.string(name),
-        tx.pure.string("Neutro")
-      ],
+      target: `${packageId}::profile::create_and_transfer_to_sender`,
+      arguments: [],
     });
 
-    const result = await client.signAndExecuteTransaction({
+    const result = await client.signAndExecuteTransactionBlock({
       signer: keypair,
-      transaction: tx,
+      transactionBlock: tx,
       options: {
         showEffects: true,
         showObjectChanges: true,
       },
     });
 
+    console.log("TX Result:", JSON.stringify(result, null, 2));
+    
     const created = result.objectChanges?.find(
       (change) => change.type === "created" && change.objectType.includes("::profile::CashbackProfile")
     );
@@ -60,8 +57,9 @@ export async function POST(req: Request) {
         digest: result.digest,
         profileId: created.objectId 
     });
-  } catch (error: any) {
-    console.error("Error creating profile:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Error creating profile:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
