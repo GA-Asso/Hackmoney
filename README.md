@@ -1,34 +1,43 @@
-# Proyecto Cashback "Capital Productivo"
+# Uniswap v4 Cashback Hook
 
-## Visión General
+## Overview
 
-Este proyecto busca crear un sistema de cashback innovador que convierte los reembolsos obtenidos por compras en capital productivo de forma automática y transparente para el usuario. En lugar de acumular "puntos" estáticos, los fondos se depositan en pools de liquidez de finanzas descentralizadas (DeFi) para generar rendimiento.
+This project implements a Uniswap v4 hook that provides a cashback mechanism. After a swap, a portion of the fees is captured and deposited into a liquidity pool of the user's choice, generating yield.
 
-La experiencia de usuario está diseñada para ser "DeFi-Abstracted", ocultando la complejidad de la blockchain y ofreciendo una interacción sencilla y fluida.
+## Architecture
 
-## Arquitectura Tecnológica
+The core of the project is the `CashbackHook.sol` contract. This contract implements the `IAfterSwapHook` interface from Uniswap v4.
 
-El sistema se basa en una combinación de tecnologías de vanguardia:
+The hook is triggered after every swap in a pool where it's enabled. It calculates the cashback amount based on the swap fees and then adds liquidity to a predefined pool.
 
-- **Uniswap v4:** Se utilizará un "hook" para interceptar las comisiones de intercambio (swap fees) y redirigirlas a los pools de liquidez designados.
-- **Sui Blockchain:** Se aprovecharán los Programmable Transaction Blocks (PTBs) y el sistema zkLogin para una gestión de identidad segura y pagos rápidos con una experiencia de usuario similar a Web2.
-- **Ethereum Name Service (ENS):** Se gestionarán identidades de usuario a través de subdominios con el formato `nombre.cashbackid.eth`, permitiendo a los usuarios configurar sus perfiles y direcciones de recepción.
+### Future improvements
 
-## Fases del Proyecto
+In the future, the user's preferred liquidity pool will be fetched from their ENS profile, allowing for a more dynamic and user-centric experience.
 
-### Fase 0: Preparación del Entorno
-- [x] Creación del README.md
-- [ ] Estructura de directorios
-- [ ] Configuración inicial de `.gitignore`
+## How it Works
 
-### Fase 1: El Corazón del Protocolo (Smart Contracts)
-- **Uniswap v4 Hook (Solidity):** Diseño e implementación del hook para depositar fondos en pools de liquidez.
-- **Contratos de Sui (Move):** Desarrollo de la lógica para PTBs, gestión de identidad y pagos.
+1.  **Swap:** A user performs a swap on a Uniswap v4 pool with the CashbackHook enabled.
+2.  **Hook Trigger:** The `afterSwap` function in `CashbackHook.sol` is called.
+3.  **Cashback Calculation:** The hook determines the cashback amount from the swap fees.
+4.  **Add Liquidity:** The hook adds the cashback amount as liquidity to a target pool.
 
-### Fase 2: La Capa de Identidad (ENS)
-- Integración con ENS para la gestión de subdominios `nombre.cashbackid.eth`.
-- Desarrollo de la lógica para la configuración de perfiles de usuario.
+## Deployment
 
-### Fase 3: La Interfaz de Usuario (App)
-- Creación de una aplicación web simple que abstraiga la complejidad de DeFi.
-- Integración con Sui zkLogin para una autenticación y experiencia de usuario fluidas.
+To deploy the contracts, you will need to have Foundry installed.
+
+1.  **Compile:**
+    ```bash
+    forge build
+    ```
+2.  **Test:**
+    ```bash
+    forge test
+    ```
+3.  **Deploy:**
+    ```bash
+    forge script script/CashbackHook.s.sol:CashbackHookScript --rpc-url <your_rpc_url> --private-key <your_private_key> --broadcast
+    ```
+
+## Scripts
+
+The `scripts` directory will contain the necessary Foundry scripts for deployment and testing.

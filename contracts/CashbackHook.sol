@@ -94,12 +94,35 @@ contract CashbackHook is
     function afterSwap(
         address sender,
         IPoolManager.PoolKey calldata key,
-        IPoolManager.SwapParams calldata params
+        IPoolManager.SwapParams calldata params,
+        bytes calldata
     ) external override returns (bytes4) {
-        // TODO: Implement the core cashback logic here.
-        // 1. Receive funds (cashback amount).
-        // 2. Determine the user's preferred liquidity pool from ENS data.
-        // 3. Add liquidity to the target pool on behalf of the user.
+        (int256 amount0, int256 amount1) = poolManager.getSwapFeeAmmounts(key, params);
+
+        address token;
+        uint256 amount;
+
+        if(amount0 > 0) {
+            token = key.currency0;
+            amount = uint256(amount0);
+        } else {
+            token = key.currency1;
+            amount = uint256(amount1);
+        }
+
+        // TODO: Implement logic to get user's preferred pool from ENS
+        address targetPool = 0x...; 
+
+        IERC20(token).approve(address(poolManager), amount);
+
+        poolManager.addLiquidity(
+            targetPool,
+            -70600,
+            70600,
+            amount,
+            bytes("")
+        );
+
         return IAfterSwapHook.afterSwap.selector;
     }
 }
