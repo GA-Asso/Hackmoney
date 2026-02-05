@@ -20,3 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 .env
 .env*
+
+sui/build
+cache/
+*.bak

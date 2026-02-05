@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mysten/sui": "^2.2.0",
+    "@mysten/sui.js": "^0.54.1",
+    "ethers": "^6.16.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
