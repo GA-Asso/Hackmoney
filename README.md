@@ -1,78 +1,34 @@
-# 💳 Cashback ID: The Invisible Rewards Protocol
+# Proyecto Cashback "Capital Productivo"
 
-**Hackathon:** ETH Global - HackMoney 2026  
-**Tech Stack:** Uniswap v4 (Hooks), Sui Network (High-Speed Execution), ENS (Identity)  
-**Tagline:** "Tu nombre es tu cuenta. Tu compra es tu inversión."
+## Visión General
 
----
+Este proyecto busca crear un sistema de cashback innovador que convierte los reembolsos obtenidos por compras en capital productivo de forma automática y transparente para el usuario. En lugar de acumular "puntos" estáticos, los fondos se depositan en pools de liquidez de finanzas descentralizadas (DeFi) para generar rendimiento.
 
-## 🎯 Business Model Canvas
+La experiencia de usuario está diseñada para ser "DeFi-Abstracted", ocultando la complejidad de la blockchain y ofreciendo una interacción sencilla y fluida.
 
-### 1️⃣ Customer Segments (Segmentos de Cliente)
-*   **Usuarios Finales (Gen Z & Alpha):** Consumidores que odian la burocracia bancaria y buscan que cada peso gastado genere valor futuro.
-*   **Comercios Modernos (Web2.5):** Negocios que quieren sistemas de lealtad sin pagar las comisiones del 3-5% de las redes de crédito tradicionales.
-*   **Marcas & Advertisers:** Empresas que buscan recompensar directamente a sus clientes fieles sin intermediarios.
+## Arquitectura Tecnológica
 
-### 2️⃣ Value Proposition (Propuesta de Valor)
-*   **Para el Usuario:** Una tarjeta que convierte el cashback en capital productivo automáticamente. No son "puntos", es dinero real que crece en pools de Uniswap.
-*   **Para el Comercio:** Reducción drástica de costos operativos y acceso a una base de usuarios nativos digitales identificados por ENS.
-*   **Diferenciador Tecnológico:** Liquidación instantánea en Sui, ahorro automatizado en Uniswap v4 e identidad legible en ENS.
+El sistema se basa en una combinación de tecnologías de vanguardia:
 
-### 3️⃣ Revenue Streams (Fuentes de Ingreso)
-*   **Performance Fee:** Una pequeña comisión (ej. 5%) sobre el *rendimiento* generado por el cashback (no sobre el principal).
-*   **SaaS Dashboard:** Analítica avanzada para comercios sobre hábitos de consumo (preservando la privacidad).
-*   **B2B Interchange:** Un fee mínimo por procesamiento de transacciones más barato que Visa/Mastercard.
+- **Uniswap v4:** Se utilizará un "hook" para interceptar las comisiones de intercambio (swap fees) y redirigirlas a los pools de liquidez designados.
+- **Sui Blockchain:** Se aprovecharán los Programmable Transaction Blocks (PTBs) y el sistema zkLogin para una gestión de identidad segura y pagos rápidos con una experiencia de usuario similar a Web2.
+- **Ethereum Name Service (ENS):** Se gestionarán identidades de usuario a través de subdominios con el formato `nombre.cashbackid.eth`, permitiendo a los usuarios configurar sus perfiles y direcciones de recepción.
 
----
+## Fases del Proyecto
 
-## 📋 MVP Scope: Cashback ID
+### Fase 0: Preparación del Entorno
+- [x] Creación del README.md
+- [ ] Estructura de directorios
+- [ ] Configuración inicial de `.gitignore`
 
-### 🚀 El Flujo "Invisible" (UX)
-1.  **Identity:** El usuario reclama su perfil con un click (usando Google/Apple vía Sui zkLogin). Se le asigna un subdominio `nombre.cashbackid.eth`.
-2.  **Spend:** El usuario paga en un comercio físico o digital con su tarjeta (Apple Pay / Google Pay).
-3.  **Execute:** Sui procesa la transacción en <1s. El contrato detecta el % de cashback pactado.
-4.  **Yield:** El cashback se envía a un Hook de Uniswap v4 que lo deposita en un pool de liquidez, generando intereses desde el minuto 1.
-5.  **Control:** El usuario ve su saldo crecer en una app simple, sin términos técnicos como "gas", "slippage" o "liquidity pools".
+### Fase 1: El Corazón del Protocolo (Smart Contracts)
+- **Uniswap v4 Hook (Solidity):** Diseño e implementación del hook para depositar fondos en pools de liquidez.
+- **Contratos de Sui (Move):** Desarrollo de la lógica para PTBs, gestión de identidad y pagos.
 
-### ✅ Features del MVP (Must-Haves)
-*   **Smart Hook (Uniswap v4):** Lógica que recibe el cashback y lo "enruta" al pool con mejor APR según el perfil del usuario.
-*   **Fast Checkout (Sui):** Uso de *Programmable Transaction Blocks* para validar identidad y pago en un solo paso.
-*   **ENS Profile Manager:** Interfaz para que el usuario elija en sus text records si quiere su cashback en Stablecoins, ETH o activos ambientales.
+### Fase 2: La Capa de Identidad (ENS)
+- Integración con ENS para la gestión de subdominios `nombre.cashbackid.eth`.
+- Desarrollo de la lógica para la configuración de perfiles de usuario.
 
----
-
-## 🎨 Branding & Killer UX
-
-### 💎 Estrategia de Diseño: "DeFi-Abstracted"
-*   **No Cripto-Jerga:** En lugar de "Wallet Address", usamos "ID de Pago". En lugar de "Staking", usamos "Crecimiento".
-*   **Visualización Dinámica:** La tarjeta digital en la app cambia de intensidad de brillo conforme el cashback del usuario genera más rendimientos.
-
-### 🌈 Identidad Visual
-*   **Paleta de Colores:**
-    *   Deep Obsidian (`#0B0E11`) - El fondo premium.
-    *   Electric Mint (`#00FFA3`) - El color del dinero activo y el crecimiento.
-    *   Sui Blue (`#4DA2FF`) - Para elementos de velocidad y confianza.
-*   **Tipografía:** Inter o Satoshi (Moderna, geométrica y altamente legible).
-
-### 📣 Marketing & Slogan
-*   **Slogan Principal:** *"Tu identidad paga."*
-*   **Campaign Idea:** "¿Por qué tu banco se queda con tus puntos? En Cashback ID, tus compras trabajan para ti."
-*   **Publicidad:** Visuales de una tarjeta física transparente donde se ven "engranajes" digitales (los Hooks) moviéndose cada vez que se hace un pago.
-
----
-
-## 🛠️ Tech Integration (Hackathon Tracks)
-
-| Protocolo  | Rol Crítico                                                                                                   | Track Target                    |
-| :--------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------ |
-| Uniswap v4 | Hooks de Gestión: Automatizan el swap de la recompensa del comercio y su colocación en pools de yield.         | *Agentic Finance / Privacy DeFi*  |
-| Sui        | Riel de Pago: Motor de alta frecuencia para el procesamiento de transacciones y zkLogin para onboarding sin fricción. | *Best Overall Sui Project*        |
-| ENS        | Centro de Datos: Almacena preferencias de usuario, niveles de riesgo y sirve como el ID público de la tarjeta. | *Most Creative Use of ENS*      |
-
----
-
-## 📈 Criterios de Éxito - Demo Day
-
-1.  **Velocidad:** Mostrar una compra en Sui que se refleja en el Hook de Uniswap en menos de 2 segundos.
-2.  **Simplicidad:** Un usuario nuevo "creando su cuenta" en menos de 10 segundos con su correo.
-3.  **Impacto:** Un dashboard que proyecte cuánto dinero extra tendría el usuario en 5 años gracias al interés compuesto del cashback.
+### Fase 3: La Interfaz de Usuario (App)
+- Creación de una aplicación web simple que abstraiga la complejidad de DeFi.
+- Integración con Sui zkLogin para una autenticación y experiencia de usuario fluidas.
