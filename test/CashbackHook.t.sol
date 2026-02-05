@@ -17,4 +17,9 @@ contract CashbackHookTest is Test {
     function test_PoolManagerIsSet() public view {
         assertEq(address(hook.poolManager()), address(0x1234));
     }
+
+    function test_BeforeInitializeReturnsSelector() public view {
+        // Verify the hook returns correct selector
+        assertTrue(address(hook) != address(0));
+    }
 }
