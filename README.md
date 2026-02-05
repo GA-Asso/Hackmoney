@@ -80,3 +80,92 @@ User Swaps → Uniswap v4 Pool → CashbackHook → Yield Pool (Auto LP)
 ## 📜 License
 
 MIT
+
+---
+
+## �� Plan de Implementación Sui
+
+Objetivo: complementar el flujo de cashback con ejecución de alta velocidad en Sui, manteniendo el swap y la identidad en Ethereum (Uniswap v4 + ENS).
+
+Fases:
+- Fase 1: Perfil y Preferencias
+  - Definir objeto `CashbackProfile` con modo, porcentaje, autocompound y tier.
+  - Eventos: `ProfileCreated`, `PreferencesUpdated`, `CashbackReceived`.
+- Fase 2: Checkout PTB (Programmable Transaction Blocks)
+  - Módulo `checkout` con `process_payment` que calcula cashback y emite eventos.
+  - Batch de pagos vía PTB para atomizar operaciones.
+- Fase 3: Integración Frontend
+  - Orquestar en Next.js: crear/actualizar perfil, enviar pagos PTB, leer eventos.
+  - Sincronizar estado y recibos con el flujo de swap en Ethereum.
+- Fase 4: Observabilidad
+  - Registro de eventos y métricas de cashback/tier.
+  - Pruebas unitarias y de integración en `sui/tests`.
+
+Quickstart Sui:
+```bash
+# Requisitos: Sui CLI instalado
+cd sui
+sui move build
+sui move test
+```
+
+---
+
+## 🔗 Enlace de Protocolos (ENS + Sui + Uniswap)
+
+- Identidad (ENS):
+  - Resolución de nombre ↔ dirección del usuario/merchant en Ethereum.
+  - Se usa en la UI y en recibos del swap.
+- Ejecución de pagos (Sui):
+  - PTB `process_payment` calcula y persiste cashback/tier del usuario.
+  - Emite eventos para UI y analítica.
+- Liquidez y precios (Uniswap v4):
+  - Swap principal y hook `CashbackHook.sol` para lógica de cashback en L1/L2 EVM.
+  - Los montos y recibos se sincronizan con el perfil en Sui.
+
+---
+
+## 🗺️ Arquitectura
+
+```mermaid
+flowchart LR
+  UI[Next.js Frontend] -->|Swap| UNI[Uniswap v4 Hook]
+  UI -->|PTB Pago| SUI[Sui: checkout + profile]
+  UI -->|Resolver| ENS[ENS]
+  UNI -->|Recibos| UI
+  SUI -->|Eventos Cashback| UI
+  ENS -->|Nombre→Dirección| UI
+```
+
+```mermaid
+sequenceDiagram
+  participant U as Usuario
+  participant F as Frontend (Next.js)
+  participant E as ENS
+  participant V as Uniswap v4
+  participant S as Sui
+
+  U->>F: Inicia checkout
+  F->>E: Resolver merchant ENS → address
+  E-->>F: Dirección 0x...
+  F->>V: Swap con CashbackHook
+  V-->>F: Recibos y montos
+  F->>S: PTB process_payment(profile, amount)
+  S-->>F: Evento PaymentProcessed + CashbackReceived
+  F-->>U: Confirmación con cashback y recibos
+```
+
+---
+
+## ✅ Estados y Datos Clave
+- Perfil: modo, % cashback, autocompound, tier.
+- Pagos: amount, merchant, cashback calculado.
+- Eventos: trazabilidad completa para UI/analytics.
+
+---
+
+## 📌 Notas
+- No se expone el Gateway públicamente; usar Tailscale/SSH para acceso seguro.
+- Mantener sincronización entre recibos EVM y perfil Sui a nivel de UI.
+- Añadir pruebas en `test/` (Foundry) y `sui/tests` para validar invariantes.
+
