@@ -13,7 +13,7 @@
 
 | Contract | Address | Status |
 |----------|---------|--------|
-| **CashbackHook** | [`0x9d922BA7fdAB56D2bEa439CD6C42b5b6B497D6A7`](https://sepolia.etherscan.io/address/0x9d922BA7fdAB56D2bEa439CD6C42b5b6B497D6A7) | ✅ Deployed |
+| **CashbackHook** | [`0xE85F5b463fB5b15Cb9222Edc8c2e07e121352762`](https://sepolia.etherscan.io/address/0xE85F5b463fB5b15Cb9222Edc8c2e07e121352762) | ✅ Deployed |
 | **PoolManager (Uniswap v4)** | [`0xE03A1074c86CFeDd5C142C4F04F1a1536e203543`](https://sepolia.etherscan.io/address/0xE03A1074c86CFeDd5C142C4F04F1a1536e203543) | ✅ Official |
 
 ---
