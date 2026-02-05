@@ -4,5 +4,8 @@ out = "out"
 libs = ["lib"]
 remappings = [
     "@uniswap/v4-core/=lib/v4-core/",
+    "@ensdomains/=lib/ens-contracts/contracts/",
     "forge-std/=lib/forge-std/src/"
 ]
+solc = "0.8.26"
+evm_version = "cancun"
